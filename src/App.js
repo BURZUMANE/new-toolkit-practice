@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
-import { Switch, Link, Route } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { Switch, Route } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import axios from 'axios';
 import { newsSlice } from './redux/store';
 import { v4 as uuidv4 } from 'uuid';
@@ -12,7 +12,6 @@ const URL =
   'http://newsapi.org/v2/everything?q=bitcoin&from=2020-04-28&sortBy=publishedAt&apiKey=baf3b32ef95d4cd0803dcc5d7a5bf9b1';
 
 function App() {
-  const la = '';
   const dispatch = useDispatch();
 
   useEffect(() => {
