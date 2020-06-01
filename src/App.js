@@ -1,39 +1,44 @@
-import React, { useEffect } from 'react';
-import { Switch, Route } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-// import axios from 'axios';
-import { newsSlice } from './redux/store';
-import { firestore } from './firesbase/config';
-import { v4 as uuidv4 } from 'uuid';
+import { useRoute } from './router';
+import { auth } from './firesbase/config';
 
 import './App.css';
-import NewsList from './components/newsList/NewsList';
-import SingleNewsItem from './components/singleNewsItem/SingleNewsItem';
-// const URL =
-//   'http://newsapi.org/v2/everything?q=bitcoin&from=2020-04-29&sortBy=publishedAt&apiKey=baf3b32ef95d4cd0803dcc5d7a5bf9b1';
+import { Navigation } from './components/nav/Navigation';
 
 function App() {
-  const dispatch = useDispatch();
+  const [isAuth, setisAuth] = useState(null);
   useEffect(() => {
-    const getNews = async () => {
-      // to get from NEWSapi and transfer to Firebase cloud
-      // const data = await axios.get(URL);
-      // data.data.articles.map((item) => firestore.collection('news').add(item));
-      firestore.collection('news').onSnapshot((doc) => {
-        const news = doc.docs.map((d) => ({ ...d.data(), newsID: d.id }));
-        dispatch(newsSlice.actions.addNews(news));
-      });
-    };
-    getNews();
-  }, []); // Only re-run the effect if count changes
+    onAuth();
+    console.log('auth', isAuth);
+    // showUser();
+  }, [isAuth]);
+  const onAuth = () => {
+    auth.onAuthStateChanged((user) => {
+      setisAuth(user);
+    });
+  };
+  // const showUser = () => {
+  //   auth.onAuthStateChanged(function (user) {
+  //     if (user) {
+  //       // User is signed in.
+  //       const email = user.email;
+  //       const uid = user.uid;
+  //       console.log(email);
+  //       console.log(uid);
+  //       // ...
+  //     } else {
+  //       // User is signed out.
+  //       // ...
+  //     }
+  //   });
+  // };
+  const routing = useRoute(isAuth);
   return (
-    <>
-      <Switch>
-        <Route exact path="/" component={NewsList}></Route>
-
-        <Route path="/news/:id" component={SingleNewsItem}></Route>
-      </Switch>
-    </>
+    <div className="container">
+      <Navigation isAuthentication={isAuth} />
+      {routing}
+    </div>
   );
 }
 

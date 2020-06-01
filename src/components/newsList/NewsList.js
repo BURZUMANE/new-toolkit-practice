@@ -1,15 +1,18 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Switch, Link, Route } from 'react-router-dom';
-
-import { v4 as uuidv4 } from 'uuid';
+import { Link } from 'react-router-dom';
+import { getCurrentNews } from '../../redux/news/newsOperations';
 
 const NewsList = () => {
-  const state = useSelector((state) => state);
+  const state = useSelector((state) => state.news);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getCurrentNews());
+  }, []);
+
   return (
     <ul>
       {state.map((item) => {
-        console.log(item.newsID);
         return (
           <li key={item.newsID}>
             <Link

@@ -1,20 +1,14 @@
-import { configureStore, createSlice } from '@reduxjs/toolkit';
+import { configureStore, combineReducers } from '@reduxjs/toolkit';
+import { userSlice } from './reducers/userReducer';
+import { newsSlice } from './reducers/newsReducer';
 
-export const newsSlice = createSlice({
-  name: 'news',
-  initialState: [
-    { newsID: '1312', post: 'dsfsdsdf' },
-    { newsID: '123123', post: 'asdasdasds' },
-  ],
-  reducers: {
-    addNews: (state, { payload }) => {
-      return [...state, ...payload];
-    },
-  },
+const rootReducer = combineReducers({
+  [userSlice.name]: userSlice.reducer,
+  [newsSlice.name]: newsSlice.reducer,
 });
 
 const store = configureStore({
-  reducer: newsSlice.reducer,
+  reducer: rootReducer,
 });
 
 export default store;

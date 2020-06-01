@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 const SingleNewsItem = () => {
-  const state = useSelector((state) => state);
+  const state = useSelector((state) => state.news);
 
   const location = useLocation();
   const id = location.state.id;
